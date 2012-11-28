@@ -100,7 +100,7 @@ if __name__ == '__main__':
   while 1:
     if VERBOSE >= 1: print timeStr(), 'sleeping for', str(SLEEP_MINS) + '...'
     time.sleep(SLEEP_MINS * 60)
-    for gb in gradebook_links:
+    for i, gb in enumerate(gradebook_links):
       res = br.open(gb['link'])
       if VERBOSE >= 1: print timeStr(), 'getting:', gb['name']
       gradebook = BeautifulSoup(res.read())
@@ -111,6 +111,6 @@ if __name__ == '__main__':
       if gb['content'] != grades_hash:
         if VERBOSE >= 1: print timeStr(), gb['name'], 'grades changed!'
         if send_email: emailNotify(gb)
-        gb['content'] = grades_hash
+        gradebook_links[i]['content'] = grades_hash
       else:
         if VERBOSE >= 1: print timeStr(), 'no change', gb['name']
